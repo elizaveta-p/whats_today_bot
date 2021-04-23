@@ -1,0 +1,60 @@
+Ангола
+Австралия
+    Регионы: act, qld, nsw, nt, sa, tas, vic, wa
+Австрия
+Бельгия
+Босния и Герцеговина
+Бразилия
+Канада
+    Регионы: ab, bc, mb, nb, nl, nt, ns, nu, on, pe, qc, sk, yt
+Чили
+Китай
+Колумбия
+Хорватия
+Чешская Республика
+Дания
+Эстония
+Финляндия
+Франция
+Германия
+    Регионы: bw, by, be, bb, hb, hh, he, ni, mv, nw, rp, sl, sn, st, sh, th
+Греция
+Гонконг
+Венгрия
+Исландия
+Ирландия
+Остров Мэн
+Израиль
+Италия
+Япония
+Корея (Южная)
+Латвия
+Литва
+Люксембург
+Македония
+Мексика
+Нидерланды
+Новая Зеландия
+    Регионы: auk, bop, can, gis, hkb, mbh, mwt, nsn, ntl, ota, stl, tas, tki, wko, wgn, wtc, cit
+Норвегия
+Перу
+Филиппины
+Польша
+Португалия
+Румыния
+Российская Федерация
+Сербия
+Сингапур
+Словакия
+    Регионы: bc, bl, ki, ni, pv, ta, tc, zi
+Словения
+Южная Африка
+Швеция
+Швейцария
+    Регионы: ag, ai, ar, bl, bs, be, fr, ge, gl, gr, ju, lu, ne, nw, ow, sg, sh, sz, so, tg, ti, ur, vs, vd, zg, zh
+Турция
+Украина
+Соединенное Королевство
+    Регионы: eng, nir, sct, wls
+Соединенные Штаты Америки
+    Регионы: al, ak, az, ar, ca, co, ct, de, dc, fl, ga, hi, id, il, in, ia, ks, ky, la, me, md, ma, mi, mn, ms, mo, mt, ne, nv, nh, nj, nm, ny, nc, nd, oh, ok, or, pa, ri, sc, sd, tn, tx, ut, vt, va, wa, wv, wi, wy

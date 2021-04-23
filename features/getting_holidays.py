@@ -1,34 +1,10 @@
+import os
+from pprint import pprint
 import requests
 import datetime
+from translator.translator import translate
 
-country_codes = {}
-
-
-# def parse_holidays(resp, date: datetime.date) -> list:
-#     result = []
-#     for holiday in resp:
-#         if holiday["date"]["iso"] == date.isoformat():   # checkkkkkkkk before use iso
-#             result.append(holiday)
-#     return result
-
-
-def format_holidays(list_of_jsons) -> list:
-    result = []
-    for holiday in list_of_jsons:
-        print(holiday)
-        my_holiday = [find_by_key('lang', 'en', holiday['holidayName'], "text"), holiday['countryFullName']]
-        result.append(my_holiday)
-    # перевести здесь
-    if len(set([x[0] for x in result])) < len(result):
-        print('cleaning')
-        clear_from_repeating = dict()
-        for holiday in result:
-            clear_from_repeating[holiday[0]] = [x[1] for x in result if x[0] == holiday[0]]
-            if len(clear_from_repeating[holiday[0]]) > 5:
-                clear_from_repeating[holiday[0]] = []
-
-        result = [[x, ', '.join(clear_from_repeating[x])] for x in clear_from_repeating.keys()]
-    return result
+# country_codes = {}
 
 
 def find_by_key(key, value, list_of_jsons, item_key):
@@ -37,6 +13,32 @@ def find_by_key(key, value, list_of_jsons, item_key):
             if local_key == key and json[local_key] == value:
                 return json[item_key]
     return 'не найдено :('
+
+
+def format_holidays(list_of_jsons) -> list:
+    result = []
+    for holiday in list_of_jsons:
+        print(holiday)
+        eng_name = find_by_key('lang', 'en', holiday['holidayName'], "text")
+        eng_country = holiday['countryFullName']
+        my_holiday = [[translate(eng_name), translate(eng_country)],
+                      [eng_name, eng_country]]
+        result.append(my_holiday)
+    # перевести здесь
+    clear_from_repeating = []
+    for holiday in result:
+        holiday_dict = dict()
+        holiday_dict['name'] = holiday[0][0]
+        countries_for_this_holiday = [[x[0][1], x[1][1]] for x in result if x[0][0] == holiday[0][0]]
+        if len(countries_for_this_holiday) > 5:
+            countries_for_this_holiday = []
+        holiday_dict['countries'] = ', '.join([x[0] for x in countries_for_this_holiday])
+        holiday_dict['en'] = f"{holiday[1][0]} in {', '.join([x[1] for x in countries_for_this_holiday]) if countries_for_this_holiday else 'the world'}"
+        if not any(x['name'] == holiday_dict['name'] for x in clear_from_repeating):
+            clear_from_repeating.append(holiday_dict)
+    result = clear_from_repeating
+    pprint(result)
+    return result
 
 
 def make_readable(holidays, date):
@@ -49,10 +51,10 @@ def make_readable(holidays, date):
 
         result = [f"{date_str} праздники будут такие:"]
         for holiday in holidays:
-            if holiday[1] != '':
-                result.append(" - ".join(holiday))
+            if holiday['countries'] != '':
+                result.append(" - ".join([holiday['name'], holiday['countries']]))
             else:
-                result.append(holiday[0])
+                result.append(holiday['name'])
         result = "\n".join(result)
     else:
         result = "Сегодня праздников нет :("
@@ -69,7 +71,7 @@ def get_holidays(date: datetime.date):
         "date": f"{date:%d-%m-%Y}"
     }
     response = requests.get(api_request, params=params).json()
-    print(response)
+    # print(response)
     # response = parse_holidays(response, date)
     for item in response:
         final_result.append(item)
@@ -78,49 +80,82 @@ def get_holidays(date: datetime.date):
     final_result = format_holidays(final_result)
 
     # final_result = make_readable(final_result, date)
-    print(final_result)
+    # print(final_result)
     return final_result
 
 
 def get_list_of_countries(num=None):
-    if country_codes == {}:
-        api_request = "https://kayaposoft.com/enrico/json/v2.0"
+    # if country_codes == {}:
+    #     api_request = "https://kayaposoft.com/enrico/json/v2.0"
+    #
+    #     params = {
+    #         "action": "getSupportedCountries"
+    #     }
+    #     response = requests.get(api_request, params=params).json()
+    #     response = parse_countries(response)
+    #     create_country_codes_dict(response)
+    # result = make_countries_readable(country_codes, num)
+    # return result
+    data_folder = os.path.abspath(os.path.basename('data'))
+    codes_filename = os.path.join(os.path.join(data_folder, 'country_codes'), 'countries_formatted.txt')
+    # print(codes_filename)
+    with open(codes_filename, "r", encoding='utf-8') as file:
+        data = file.readlines()
+        data = data[:num]
+    data = ''.join(data)
+    return data
 
-        params = {
-            "action": "getSupportedCountries"
-        }
-        response = requests.get(api_request, params=params).json()
-        response = parse_countries(response)
-        create_country_codes_dict(response)
-    return make_countries_readable(country_codes, num)
+
+def update_countries():
+    api_request = "https://kayaposoft.com/enrico/json/v2.0"
+
+    params = {
+        "action": "getSupportedCountries"
+    }
+    response = requests.get(api_request, params=params).json()
+    response = parse_countries(response)
+    # create_country_codes_dict(response)
+    result = make_countries_readable(response, None)
+    return result
 
 
-def create_country_codes_dict(list_of_countries):
-    for country in list_of_countries:
-        regions = country[1]
-        if not regions:
-            regions = 'не поддерживаются'
-        else:
-            regions = ', '.join(regions)
-        country_codes[country[0]] = regions
+# def create_country_codes_dict(list_of_countries):
+#     for country in list_of_countries:
+#         regions = country[1]
+#         if not regions:
+#             regions = 'не поддерживаются'
+#         else:
+#             regions = ', '.join(regions)
+#         country_codes[country[0]] = regions
 
 
 def parse_countries(list_of_jsons):
     result = []
     for country in list_of_jsons:
-        result.append([country["fullName"], country["regions"]])
+        # print(country["fullName"])
+        result.append([translate(country["fullName"]), country["regions"]])
     return result
 
 
-def make_countries_readable(countries_dict, num):
+def make_countries_readable(countries_list, num):
     result = []
-    for country in countries_dict.keys():
-        if countries_dict[country] != 'не поддерживаются':
-            result.append('\n'.join([country, f"    Регионы: {countries_dict[country]}"]))
+    for country in countries_list:
+        if countries_list[1]:
+            result.append('\n'.join([country, f"    Регионы: {country[1]}"]))
         else:
             result.append(country)
-    if num is None or num > len(country_codes.keys()):
-        num = len(country_codes.keys())
+    if num is None or num > len(countries_list):
+        num = len(countries_list)
     result = result[:num]
     result = '\n'.join(result)
+    data_folder = os.path.abspath(os.path.basename('data'))
+    codes_filename = os.path.join(os.path.join(data_folder, 'country_codes'), 'countries_formatted.txt')
+    print(codes_filename)
+    with open(codes_filename, "w") as file:
+        file.write(result)
+    #
+    # data_folder = os.path.abspath(os.path.basename('data'))
+    # codes_filename = os.path.join(os.path.join(data_folder, 'country_codes'), 'countries_formatted.txt')
+    # result = open(codes_filename, "r").read()
+    # print(result)
     return result
