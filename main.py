@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 import io
 
 import pytz
@@ -12,9 +13,12 @@ import datetime
 from api_key import TOKEN
 from features.making_picture import make_picture, image_to_bytes
 from features.getting_holidays import get_list_of_countries, get_holidays, make_readable
+from features.wiki_search import search_in_wiki
 from translator.translator import translate
+from translator.decode_url import decode_cyrillic_urls
 import datetime
 from data.exceptions.errors import PastDateError, FutureDateError
+
 
 # reply_keyboard = [['/address', '/phone'],
 #                   ['/site', '/work_time']]
@@ -55,7 +59,7 @@ def notify_me(update, context):
             context
         )
         local_timezone = pytz.timezone('Europe/Moscow')
-        target_time = datetime.time(hour=time.hour,minute=time.minute).replace(tzinfo=local_timezone)
+        target_time = datetime.time(hour=time.hour, minute=time.minute).replace(tzinfo=local_timezone)
         # print(target_time)
         context.job_queue.run_daily(
             callback=send_holidays,
@@ -113,8 +117,7 @@ def holidays(update, context):
     # print(date)
     holiday = get_holidays(date)
     print(holiday)
-    # my_str = [f"{x[1][0]} в {x[1][1]}" for x in enumerate(holiday)]
-    keyboard = [[InlineKeyboardButton(text=str(x[0] + 1), callback_data=x[1]['en']) for x in enumerate(holiday)]]
+    keyboard = [[InlineKeyboardButton(text=x["name"], callback_data=x['en'])] for x in holiday]
     markup = InlineKeyboardMarkup(inline_keyboard=keyboard)
 
     update.message.reply_text(make_readable(holiday, date), reply_markup=markup)
@@ -122,12 +125,19 @@ def holidays(update, context):
 
 def choose_holiday(update, context):
     query = update.callback_query
-    # query.answer()
     choice = translate(query.data)
-    holiday_name = choice.split(' в ')[0]
     print(choice)
+    wiki_result = search_in_wiki(choice)
+    if wiki_result["completed"]:
+        new_url = decode_cyrillic_urls(wiki_result['url'])
+        caption = '\n\n'.join(["Результат поиска в Википедии:", wiki_result["title"],
+                               wiki_result["body"], new_url])
+    else:
+        caption = choice
+    holiday_name = choice.split(' в ')[0]
     byte_im = create_picture(holiday_name)
-    context.bot.send_photo(query.message.chat.id, photo=byte_im, caption=choice)
+    context.bot.send_photo(query.message.chat.id, photo=byte_im)
+    context.bot.send_message(text=caption, chat_id=query.message.chat.id)
 
 
 def create_picture(text):
@@ -142,7 +152,7 @@ def countries(update, context):
     else:
         num = None
     country = get_list_of_countries(num)
-    print(country)
+    # print(country)
     update.message.reply_text(country)
 
 
