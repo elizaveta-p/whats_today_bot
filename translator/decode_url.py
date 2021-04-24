@@ -4,7 +4,6 @@ def decode_cyrillic_urls(url: str):
     for letter in d.keys():
         while letter in cyrillic_part:
             cyrillic_part = cyrillic_part.replace(letter, d[letter])
-    # print(cyrillic_part)
     url = url.split('/')[:-1]
     url.append(cyrillic_part)
     url = '/'.join(url)
@@ -79,7 +78,5 @@ def create_table():
     Ё  0401  D001  208 001  168
     ё  0451  D191  209 145  184'''
     s = [x.strip().split('  ') for x in s.split('\n')]
-    print(s)
     d = {f"%{x[2][:2]}%{x[2][2:]}": x[0] for x in s}
-    # pprint(d)
     return d

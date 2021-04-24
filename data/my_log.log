@@ -1,0 +1,15 @@
+2021-04-24 04:15:57,697 INFO apscheduler.scheduler Scheduler started
+2021-04-24 04:16:30,769 INFO root making info about holiday
+2021-04-24 04:16:32,571 INFO root connecting to wiki
+2021-04-24 04:16:34,044 INFO root wiki found: True
+2021-04-24 04:16:34,046 INFO root cyrillic url decoded
+2021-04-24 04:16:34,046 INFO root creating picture
+2021-04-24 04:16:35,813 INFO root converting to bytes
+2021-04-24 04:19:35,734 INFO apscheduler.scheduler Scheduler started
+2021-04-24 04:19:53,670 INFO root making info about holiday
+2021-04-24 04:19:54,791 INFO root connecting to wiki
+2021-04-24 04:19:56,399 INFO root wiki found: True
+2021-04-24 04:19:56,400 INFO root cyrillic url decoded
+2021-04-24 04:19:56,401 INFO root creating picture
+2021-04-24 04:19:57,464 INFO root picture successfully created
+2021-04-24 04:19:57,465 INFO root converting to bytes

@@ -2,6 +2,7 @@ import io
 import os
 import random
 import textwrap
+import logging
 
 from PIL import ImageFont, Image, ImageDraw
 
@@ -10,9 +11,7 @@ SIZE = (1280, 1024)
 
 
 def make_picture(text):
-    # print(os.path.abspath(os.path.curdir))
     image = Image.Image
-
     background = form_part_of_pic('background', image)
     frame = form_part_of_pic('frame', image)
     character = form_part_of_pic('character', image)
@@ -23,10 +22,7 @@ def make_picture(text):
     draw = ImageDraw.Draw(im3)
     text = text + '!!!'
     add_text(text, draw, im3)
-
-    # font = ImageFont.truetype("data/fonts/19539.otf", 200)
-    # # text = "С Днем Собаки!!!"
-    # I1.text((100, 100), text, font=font, fill=(0, 0, 250))
+    logging.info('picture successfully created')
     return im3
 
 
@@ -40,9 +36,7 @@ def image_to_bytes(im: Image.Image):
 def form_part_of_pic(part, image):
     data_folder = os.path.abspath(os.path.basename('data'))
     part_folder = os.path.join(os.path.join(data_folder, 'images'), part)
-    # print(part_folder)
     items_filenames = os.listdir(part_folder)
-    # print(items_filenames)
     item = random.choice(items_filenames)
     part = Image.open(os.path.join(part_folder, item))
     part = image.convert(part, "RGBA")
@@ -62,7 +56,6 @@ def add_text(text, draw, image):
     lines = [line.rjust(max_len, ' ') for line in lines]
     maincolor, shadowcolor = get_average_color(image)
     thickness = 2
-    # print(color)
     y = 100
     for line in lines:
         w, h = font.getsize(line)
