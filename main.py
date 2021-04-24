@@ -29,7 +29,12 @@ def unknown_text(update, context):
 
 
 def start(update, context):
-    update.message.reply_text("Привет! Я......")
+    update.message.reply_text("Привет! Я бот, для получения сведений о праздниках и создания онлайн-открыток с ними. Помощь - /help")
+
+
+def help(update, context):
+    data = open('data/help.txt', 'r', encoding='utf-8').read()
+    update.message.reply_text(data)
 
 
 def remove_job_if_exists(name, context):
@@ -107,7 +112,7 @@ def holidays(update, context):
     except PastDateError or FutureDateError:
         update.message.reply_text("Поддерживаются только праздники настоящего и будущего")
     except ValueError:
-        update.message.reply_text("Использование: /holidays [dd-mm-yyy]")
+        update.message.reply_text("Использование: /holidays [дд-мм-гггг]")
 
 
 def choose_holiday(update, context):
@@ -166,6 +171,7 @@ def main():
         text_handler = MessageHandler(Filters.text, unknown_text)
         updater.dispatcher.add_handler(CallbackQueryHandler(choose_holiday))
 
+        dp.add_handler(CommandHandler("help", help))
         dp.add_handler(CommandHandler("start", start))
         dp.add_handler(CommandHandler("countries", countries))
         dp.add_handler(CommandHandler("holidays", holidays))

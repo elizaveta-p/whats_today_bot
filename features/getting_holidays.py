@@ -18,7 +18,7 @@ def format_holidays(list_of_jsons) -> list:
     try:
         result = []
         for holiday in list_of_jsons:
-            print(holiday)
+            # print(holiday)
             eng_name = find_by_key('lang', 'en', holiday['holidayName'], "text")
             eng_country = holiday['countryFullName']
             my_holiday = [[translate(eng_name), translate(eng_country)],
@@ -36,7 +36,7 @@ def format_holidays(list_of_jsons) -> list:
             if not any(x['name'] == holiday_dict['name'] for x in clear_from_repeating):
                 clear_from_repeating.append(holiday_dict)
         result = clear_from_repeating
-        pprint(result)
+        # pprint(result)
         return result
     except BaseException as be:
         logging.fatal(be)

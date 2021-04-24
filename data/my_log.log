@@ -13,3 +13,23 @@
 2021-04-24 04:19:56,401 INFO root creating picture
 2021-04-24 04:19:57,464 INFO root picture successfully created
 2021-04-24 04:19:57,465 INFO root converting to bytes
+2021-04-24 13:52:23,070 INFO apscheduler.scheduler Scheduler started
+2021-04-24 13:52:54,625 INFO apscheduler.scheduler Scheduler started
+2021-04-24 13:54:08,148 INFO apscheduler.scheduler Scheduler started
+2021-04-24 13:55:09,365 INFO apscheduler.scheduler Scheduler started
+2021-04-24 13:56:41,776 INFO apscheduler.scheduler Scheduler started
+2021-04-24 13:57:06,588 INFO root notifications added at 00:00:00
+2021-04-24 13:57:06,732 INFO apscheduler.scheduler Added job "889139029" to job store "default"
+2021-04-24 13:57:12,166 INFO apscheduler.scheduler Removed job c7316cbab2f842a2b4dd8b37bf006aa0
+2021-04-24 13:57:25,618 INFO root notifications added at 13:58:00
+2021-04-24 13:57:25,619 INFO apscheduler.scheduler Added job "889139029" to job store "default"
+2021-04-24 13:58:00,023 INFO apscheduler.executors.default Running job "889139029 (trigger: cron[day_of_week='0,1,2,3,4,5,6', hour='13', minute='58', second='0'], next run at: 2021-04-24 13:58:00 MSK)" (scheduled at 2021-04-24 13:58:00+03:00)
+2021-04-24 13:58:01,021 INFO apscheduler.executors.default Job "889139029 (trigger: cron[day_of_week='0,1,2,3,4,5,6', hour='13', minute='58', second='0'], next run at: 2021-04-25 13:58:00 MSK)" executed successfully
+2021-04-24 13:58:09,015 INFO apscheduler.scheduler Removed job ee65a5cda5914b4f8548622fdaac9718
+2021-04-24 13:59:37,190 INFO root making info about holiday
+2021-04-24 13:59:38,137 INFO root connecting to wiki
+2021-04-24 13:59:39,611 INFO root wiki found: True
+2021-04-24 13:59:39,612 INFO root cyrillic url decoded
+2021-04-24 13:59:39,612 INFO root creating picture
+2021-04-24 13:59:41,924 INFO root picture successfully created
+2021-04-24 13:59:41,926 INFO root converting to bytes
