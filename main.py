@@ -5,7 +5,7 @@ from telegram.ext import Updater, MessageHandler, Filters, CallbackQueryHandler
 from telegram.ext import CommandHandler
 from telegram import InlineKeyboardButton, InlineKeyboardMarkup
 # from api_key import TOKEN
-import config.TOKEN
+import config
 from features.making_picture import make_picture, image_to_bytes
 from features.getting_holidays import get_list_of_countries, get_holidays, make_readable
 from features.wiki_search import search_in_wiki
