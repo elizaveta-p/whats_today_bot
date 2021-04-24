@@ -4,7 +4,7 @@ import telegram.error
 from telegram.ext import Updater, MessageHandler, Filters, CallbackQueryHandler
 from telegram.ext import CommandHandler
 from telegram import InlineKeyboardButton, InlineKeyboardMarkup
-from api_key import TOKEN
+# from api_key import TOKEN
 from features.making_picture import make_picture, image_to_bytes
 from features.getting_holidays import get_list_of_countries, get_holidays, make_readable
 from features.wiki_search import search_in_wiki
@@ -19,10 +19,6 @@ logging.basicConfig(
     format='%(asctime)s %(levelname)s %(name)s %(message)s'
 )
 
-
-# reply_keyboard = [['/address', '/phone'],
-#                   ['/site', '/work_time']]
-# markup = ReplyKeyboardMarkup(reply_keyboard, one_time_keyboard=False)
 
 def unknown_text(update, context):
     update.message.reply_text(f'Не удалось распознать сообщение "{update.message.text}", для справки нажмите /help')
